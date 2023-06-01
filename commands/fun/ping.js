@@ -7,11 +7,19 @@ module.exports = {
         .setName('ping')
         .setDescription('Replies with Pong!'),
     async execute(interaction) {
-        await interaction.reply({ content: 'Hee!', ephemeral: true });
-        await wait(2000);
+        await interaction.deferReply({ ephemeral: true });
+        await wait(1000);
         await interaction.editReply({
-            content: 'Haw!',
+            content: "If this keeps up, I'm...",
             ephemeral: true
         });
+        await wait(1000);
+        await interaction.editReply({
+            content: "I'm not dead yet!",
+            ephemeral: true
+        });
+        await wait(1000);
+        await interaction.followUp({ content: 'Yee-haw!' });
+        await interaction.deleteReply();
     }
 };
