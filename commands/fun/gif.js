@@ -15,5 +15,8 @@ module.exports = {
                     { name: 'Meme', value: 'gif_meme' },
                     { name: 'Movie', value: 'gif_movie' }
                 )
-        )
+        ),
+    async execute(interaction) {
+        const category = interacion.options.getString('category');
+    }
 };
