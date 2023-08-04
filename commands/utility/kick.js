@@ -11,5 +11,18 @@ module.exports = {
                 .setDescription('The member to kick')
                 .setRequired(true)
         )
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers)
+        .addStringOption((option) =>
+            option.setName('reason').setDescription('The reason for banning')
+        )
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
+    async execute(interaction) {
+        const target = interaction.options.getMember('target');
+        const reason =
+            interaction.options.getString('reason') || 'No reason provided';
+
+        await interaction.reply(
+            `Kicking ${target.username} for reason: ${reason}`
+        );
+        await target.kick();
+    }
 };
