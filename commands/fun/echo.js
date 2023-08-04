@@ -22,5 +22,16 @@ module.exports = {
             option
                 .setName('ephemeral')
                 .setDescription('Whether or not the echo should be ephemeral')
-        )
+        ),
+    async execute(interaction) {
+        const input = interaction.options.getString('input');
+        const channel =
+            interaction.options.getChannel('channel') || interaction.channel;
+        const ephemeral = interaction.options.getBoolean('ephemeral') || false;
+
+        await channel.send({
+            content: input,
+            ephemeral: ephemeral
+        });
+    }
 };
