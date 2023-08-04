@@ -5,17 +5,27 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('guide')
         .setDescription('Search discordjs.guide!')
-        .addStringOption((option) =>
-            option
+        .addSubcommand((subcommand) =>
+            subcommand
                 .setName('query')
                 .setDescription('Phrase to search for')
-                .setAutocomplete(true)
-        )
-        .addStringOption((option) =>
-            subcommand
-                .setName('version')
-                .setDescription('Version to search in')
-                .setAutocomplete(true)
+                .addStringOption((option) =>
+                    option
+                        .setName('phrase')
+                        .setDescription('The phrase')
+                        .setAutocomplete(true)
+                )
+                .addSubcommand((subcommand) =>
+                    subcommand
+                        .setName('version')
+                        .setDescription('Version to search in')
+                        .addStringOption((option) =>
+                            option
+                                .setName('discord_version')
+                                .setDescription('Discord version')
+                                .setAutocomplete(true)
+                        )
+                )
         ),
     async autocomplete(interaction) {
         const focusedOption = interaction.options.getFocused(true);
