@@ -1,14 +1,18 @@
 const fs = require('node:fs');
 const path = require('node:path');
+// `Collection` class extends JavaScript's native `Map` class.
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+// store client as a global variable
 global.client = client;
-
+// manage command cooldowns
 client.cooldowns = new Collection();
-
+// register command objects
 client.commands = new Collection();
+
+// registering commands
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
@@ -17,6 +21,7 @@ for (const folder of commandFolders) {
     const commandFiles = fs
         .readdirSync(commandsPath)
         .filter((file) => file.endsWith('.js'));
+
     for (const file of commandFiles) {
         const filePath = path.join(commandsPath, file);
         const command = require(filePath);
@@ -30,6 +35,7 @@ for (const folder of commandFolders) {
     }
 }
 
+// registering events
 const eventsPath = path.join(__dirname, 'events');
 const eventFiles = fs
     .readdirSync(eventsPath)
