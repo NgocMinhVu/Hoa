@@ -3,9 +3,6 @@ const { Events, Collection } = require('discord.js');
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
-        console.log(interaction.isAutocomplete());
-        console.log(interaction.type);
-
         if (interaction.isAutocomplete()) {
             const command = client.commands.get(interaction.commandName);
 

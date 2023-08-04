@@ -14,17 +14,18 @@ module.exports = {
                         .setName('phrase')
                         .setDescription('The phrase')
                         .setAutocomplete(true)
+                        .setRequired(true)
                 )
-                .addSubcommand((subcommand) =>
-                    subcommand
-                        .setName('version')
-                        .setDescription('Version to search in')
-                        .addStringOption((option) =>
-                            option
-                                .setName('discord_version')
-                                .setDescription('Discord version')
-                                .setAutocomplete(true)
-                        )
+        )
+        .addSubcommand((subcommand) =>
+            subcommand
+                .setName('version')
+                .setDescription('Version to search in')
+                .addStringOption((option) =>
+                    option
+                        .setName('discord_version')
+                        .setDescription('Discord version')
+                        .setAutocomplete(true)
                 )
         ),
     async autocomplete(interaction) {
@@ -53,18 +54,17 @@ module.exports = {
         );
     },
     async execute(interaction) {
-        // INCOMPLETE
         const queryOption = interaction.options.getString('query');
-        console.log(queryOption);
-        const versionOption = interaction.options.getString('version');
-        console.log(versionOption);
 
-        let selectedOption;
+        if (!queryOption) {
+            await interaction.reply(`You did not select an option.`);
+        } else {
+            const versionOption =
+                interaction.options.getString('version') || '';
 
-        if (!selectedOption) {
-            await interaction.reply('You did not select any option');
+            await interaction.reply(
+                `You selected: **${queryOption} ${versionOption}**`
+            );
         }
-
-        await interaction.reply(`You selected: ${selectedOption}`);
     }
 };
