@@ -31,7 +31,9 @@ module.exports = {
                     .setDescription('The Water-type Tiny Turtle Pokémon.')
                     .setValue('squirtle')
                     .setEmoji('💧')
-            );
+            )
+            .setMinValues(1)
+            .setMaxValues(3);
 
         const row = new ActionRowBuilder().addComponents(select);
 
