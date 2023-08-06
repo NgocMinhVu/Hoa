@@ -17,6 +17,7 @@ module.exports = {
                 )
         ),
     async execute(interaction) {
-        const category = interacion.options.getString('category');
+        const category = interaction.options.getString('category');
+        await interaction.reply(`GIF categoy: ${category}`);
     }
 };

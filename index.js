@@ -4,7 +4,10 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildModeration],
+    allowedMentions: { parse: ['users', 'roles'] }
+});
 // store client as a global variable
 global.client = client;
 // manage command cooldowns
