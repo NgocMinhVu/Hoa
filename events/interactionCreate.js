@@ -84,6 +84,10 @@ module.exports = {
                 console.error(`Error executing ${interaction.commandName}`);
                 console.error(error);
             }
+        } else if (interaction.isModalSubmit()) {
+            await interaction.reply({
+                content: 'Your submission was received successfully!'
+            });
         } else if (interaction.isButton()) {
             // respond to the button
             return;
