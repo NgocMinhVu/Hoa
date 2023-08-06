@@ -39,14 +39,41 @@ module.exports = {
 
         const row = new ActionRowBuilder().addComponents(cancel, confirm);
 
-        await interaction.reply({
+        // store InteractionResponse as a variable
+        const response = await interaction.reply({
             content: `Are you sure you want to ban ${target} for reason: ${reason}?`,
             components: [row]
         });
 
-        // await interaction.reply(
-        //     `Banning ${target.username} for reason: ${reason}`
-        // );
-        // await interaction.guild.members.ban(target);
+        const collectorFilter = (i) => i.user.id === interaction.user.id;
+
+        try {
+            // awaitMessageComponent returns a Promise that resolves when any interaction passes its filter, or throws if none are received before the timeout.
+            const confirmation = await response.awaitMessageComponent({
+                // only the user who triggered the original interaction can use the buttons
+                filter: collectorFilter,
+                time: 60000
+            });
+
+            if (confirmation.customId === 'confirm') {
+                await interaction.guild.members.ban(target);
+                await confirmation.update({
+                    content:
+                        '${target.username} has been banned for reason: ${reason}',
+                    components: []
+                });
+            } else if (confirmation.customId === 'cancel') {
+                await confirmation.update({
+                    content: 'Action cancelled',
+                    components: []
+                });
+            }
+        } catch (e) {
+            await interaction.editReply({
+                content:
+                    'Confirmation not received within 1 minute, cancelling',
+                components
+            });
+        }
     }
 };
