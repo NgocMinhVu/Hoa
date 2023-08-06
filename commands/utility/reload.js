@@ -12,10 +12,8 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
-        const commandName = interaction.options
-            .getString('command', true)
-            .toLowerCase();
-        const command = interaction.client.commands.get(commandName);
+        const commandName = interaction.options.getString('command', true);
+        const command = client.commands.get(commandName);
 
         if (!command) {
             return interaction.reply(
@@ -23,13 +21,16 @@ module.exports = {
             );
         }
 
+        // get name of command file
+        const commandFile = commandName.toLowerCase().replace(/\s/g, '');
+
         delete require.cache[
-            require.resolve(`../${command.category}/${command.data.name}.js`)
+            require.resolve(`../${command.category}/${commandFile}.js`)
         ];
 
         try {
-            interaction.client.commands.delete(command.data.name);
-            const newCommand = require(`../${command.category}/${command.data.name}.js`);
+            client.commands.delete(command.data.name);
+            const newCommand = require(`../${command.category}/${commandFile}.js`);
             interaction.client.commands.set(newCommand.data.name, newCommand);
             await interaction.reply(
                 `Command \`${newCommand.data.name}\` was reloaded!`

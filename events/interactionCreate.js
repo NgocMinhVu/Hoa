@@ -84,14 +84,30 @@ module.exports = {
                 console.error(`Error executing ${interaction.commandName}`);
                 console.error(error);
             }
-        } else if (interaction.isModalSubmit()) {
+        }
+
+        if (interaction.isModalSubmit()) {
             await interaction.reply({
                 content: 'Your submission was received successfully!'
             });
-        } else if (interaction.isButton()) {
+        }
+
+        if (interaction.isUserContextMenuCommand()) {
+            const command = client.commands.get(interaction.commandName);
+
+            try {
+                await command.execute(interaction);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        if (interaction.isButton()) {
             // respond to the button
             return;
-        } else if (interaction.isStringSelectMenu()) {
+        }
+
+        if (interaction.isStringSelectMenu()) {
             // respond to the select menu
             return;
         }
