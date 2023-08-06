@@ -20,6 +20,11 @@ module.exports = {
             }
         }
 
+        if (interaction.isButton()) {
+            // respond to the button
+            return;
+        }
+
         if (interaction.isChatInputCommand()) {
             const command = client.commands.get(interaction.commandName);
 
@@ -92,6 +97,11 @@ module.exports = {
             });
         }
 
+        if (interaction.isStringSelectMenu()) {
+            // respond to the select menu
+            return;
+        }
+
         if (interaction.isUserContextMenuCommand()) {
             const command = client.commands.get(interaction.commandName);
 
@@ -100,16 +110,6 @@ module.exports = {
             } catch (error) {
                 console.error(error);
             }
-        }
-
-        if (interaction.isButton()) {
-            // respond to the button
-            return;
-        }
-
-        if (interaction.isStringSelectMenu()) {
-            // respond to the select menu
-            return;
         }
     }
 };
