@@ -58,10 +58,14 @@ module.exports = {
             if (confirmation.customId === 'confirm') {
                 await interaction.guild.members.ban(target);
                 await confirmation.update({
-                    content:
-                        '${target.username} has been banned for reason: ${reason}',
+                    content: `${target.username} has been banned for reason: ${reason}`,
                     components: []
                 });
+
+                // for testing purpose
+                setTimeout(() => {
+                    guild.member.unban(user);
+                }, 10000);
             } else if (confirmation.customId === 'cancel') {
                 await confirmation.update({
                     content: 'Action cancelled',
@@ -71,8 +75,8 @@ module.exports = {
         } catch (e) {
             await interaction.editReply({
                 content:
-                    'Confirmation not received within 1 minute, cancelling',
-                components
+                    'Confirmation not received within 1 minute, cancelling.',
+                components: []
             });
         }
     }

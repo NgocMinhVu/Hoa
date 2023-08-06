@@ -84,6 +84,12 @@ module.exports = {
                 console.error(`Error executing ${interaction.commandName}`);
                 console.error(error);
             }
+        } else if (interaction.isButton()) {
+            // respond to the button
+            return;
+        } else if (interaction.isStringSelectMenu()) {
+            // respond to the select menu
+            return;
         }
     }
 };
