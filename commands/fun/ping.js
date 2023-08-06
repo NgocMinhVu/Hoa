@@ -13,7 +13,7 @@ module.exports = {
             content: "If this keeps up, I'm...",
             ephemeral: true
         });
-        await wait(1000);
+        await wait(3000);
         await interaction.editReply({
             content: "I'm not dead yet!",
             ephemeral: true
