@@ -8,7 +8,7 @@ module.exports = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName('user')
-                .setDescription('Info about a user')
+                .setDescription('Information about a user')
                 .addUserOption((option) =>
                     option.setName('target').setDescription('The user')
                 )

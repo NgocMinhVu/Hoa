@@ -1,7 +1,12 @@
 const fs = require('node:fs');
 const path = require('node:path');
 // `Collection` class extends JavaScript's native `Map` class.
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const {
+    Client,
+    Collection,
+    GatewayIntentBits,
+    Partials
+} = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({
@@ -9,9 +14,13 @@ const client = new Client({
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildModeration,
         GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.GuildMessageReactions,
         GatewayIntentBits.MessageContent
     ],
-    allowedMentions: { parse: ['users', 'roles'] }
+    allowedMentions: {
+        parse: ['users', 'roles'],
+        partials: [Partials.Message, Partials.Channel, Partials.Reaction]
+    }
 });
 // store client as a global variable
 global.client = client;
