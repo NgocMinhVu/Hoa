@@ -2,10 +2,10 @@ const { SlashCommandBuilder } = require('discord.js');
 const { Tags } = require('../../tags.js');
 
 module.exports = {
-    category: 'tags',
+    category: 'tag',
     data: new SlashCommandBuilder()
-        .setName('gettag')
-        .setDescription('Get a tag.')
+        .setName('taginfo')
+        .setDescription('Retrieve tag details')
         .addStringOption((option) =>
             option.setName('name').setDescription('Tag name').setRequired(true)
         ),
@@ -16,10 +16,9 @@ module.exports = {
         const tag = await Tags.findOne({ where: { name: tagName } });
 
         if (tag) {
-            // UPDATE tags SET usage_count = usage_count + 1 WHERE name = 'tagName';
-            tag.increment('usage_count');
-
-            return interaction.reply(tag.get('description'));
+            return interaction.reply(
+                `\`${tagName}\` was created by **${tag.username}** at **${tag.createdAt}** and has been used **${tag.usage_count}** times.`
+            );
         }
 
         return interaction.reply(`Could not find tag: \`${tagName}\``);

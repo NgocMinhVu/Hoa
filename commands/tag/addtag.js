@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { Tags } = require('../../tags.js');
 
 module.exports = {
-    category: 'tags',
+    category: 'tag',
     data: new SlashCommandBuilder()
         .setName('addtag')
         .setDescription('Set a new tag')
