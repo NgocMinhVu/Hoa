@@ -16,8 +16,11 @@ const Tags = sequelize.define('tags', {
         type: Sequelize.STRING,
         unique: true
     },
-    // description TEXT
-    description: Sequelize.TEXT,
+    // description TEXT NOT NULL
+    description: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
     // username VARCHAR(255)
     username: Sequelize.STRING,
     // usage_count INT NOT NULL DEFAULT 0

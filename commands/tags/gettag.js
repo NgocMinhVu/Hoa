@@ -1,10 +1,10 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { Tags } = require('./../../tags.js');
+const { Tags } = require('../../tags.js');
 
 module.exports = {
     category: 'tags',
     data: new SlashCommandBuilder()
-        .setName('tag')
+        .setName('gettag')
         .setDescription('Get a tag.')
         .addStringOption((option) =>
             option.setName('name').setDescription('Tag name').setRequired(true)
@@ -22,6 +22,6 @@ module.exports = {
             return interaction.reply(tag.get('description'));
         }
 
-        return interaction.reply(`Could not find tag: ${tagName}`);
+        return interaction.reply(`Could not find tag: \`${tagName}\``);
     }
 };
