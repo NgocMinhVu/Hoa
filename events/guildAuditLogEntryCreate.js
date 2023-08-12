@@ -17,14 +17,14 @@ module.exports = {
 
         if (action === AuditLogEvent.MessageDelete) {
             console.log(
-                `A message by \${target.username}\ was deleted by \${executor.username}\ in \${name}\.`
+                `A message by ${target.username} was deleted by ${executor.username} in ${name}.`
             );
             return;
         }
 
         if (action === AuditLogEvent.MemberKick) {
             console.log(
-                `\${target.username}\ was kicked by \${executor.username}`
+                `${target.username} was kicked by ${executor.username}.`
             );
             return;
         }

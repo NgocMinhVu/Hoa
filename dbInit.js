@@ -13,7 +13,7 @@ const CurrencyShop = require('./models/CurrencyShop.js')(
     sequelize,
     Sequelize.DataTypes
 );
-require('.models/Users.js')(sequelize, Sequelize.DataTypes);
+require('./models/Users.js')(sequelize, Sequelize.DataTypes);
 require('./models/UserItems.js')(sequelize, Sequelize.DataTypes);
 
 // process.argv array contains the command line arguments.
