@@ -8,16 +8,19 @@ module.exports = {
         .addStringOption((option) =>
             option
                 .setName('query')
-                .setDescription('Placeholder')
+                .setDescription('The title or URL of the track')
                 .setRequired(true)
         ),
     async execute(interaction) {
         const channel = interaction.member.voice.channel;
         if (!channel) {
-            return interaction.reply(
-                'You are not connected to a voice channel.'
-            );
+            return interaction.reply({
+                content: 'You are not connected to a voice channel.',
+                ephemeral: true
+            });
         }
+
+        // TODO: if the bot is already in a channel, check if it is the same channel as the member
 
         const query = interaction.options.getString('query');
         await interaction.deferReply();

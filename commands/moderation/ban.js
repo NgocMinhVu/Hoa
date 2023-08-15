@@ -7,7 +7,7 @@ const {
 } = require('discord.js');
 
 module.exports = {
-    category: 'utility',
+    category: 'moderation',
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('Select a member and ban them.')

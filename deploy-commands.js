@@ -28,25 +28,42 @@ for (const folder of commandFolders) {
     }
 }
 
+const global = process.argv.includes('--global') || process.argv.includes('-g');
+
 // construct and prepare an instance of the REST module
 const rest = new REST().setToken(token);
 
 // deploy commands
 (async () => {
     try {
-        console.log(
-            `Started refreshing ${commands.length} application (/) commands.`
-        );
+        if (global) {
+            console.log(
+                `Started refreshing ${commands.length} global application (/) commands.`
+            );
 
-        // the put method is used to fully refresh all commands in the guild with the current set
-        const data = await rest.put(
-            Routes.applicationGuildCommands(clientId, guildId),
-            { body: commands }
-        );
+            const data = await rest.put(
+                Routes.applicationCommands(clientId, guildId),
+                { body: commands }
+            );
 
-        console.log(
-            `Successfully reloaded ${data.length} application (/) commands.`
-        );
+            console.log(
+                `Successfully reloaded ${data.length} global application (/) commands.`
+            );
+        } else {
+            console.log(
+                `Started refreshing ${commands.length} guild application (/) commands.`
+            );
+
+            // the put method is used to fully refresh all commands in the guild with the current set
+            const data = await rest.put(
+                Routes.applicationGuildCommands(clientId, guildId),
+                { body: commands }
+            );
+
+            console.log(
+                `Successfully reloaded ${data.length} guild application (/) commands.`
+            );
+        }
     } catch (error) {
         console.error(error);
     }

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { getBalance } = require('../../currency.js');
+const { getBalance } = require('../../currency/currency.js');
 
 module.exports = {
     category: 'currency',

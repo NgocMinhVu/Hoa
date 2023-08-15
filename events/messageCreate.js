@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { addBalance } = require('../currency');
+const { addBalance } = require('../currency/currency.js');
 
 module.exports = {
     name: Events.MessageCreate,

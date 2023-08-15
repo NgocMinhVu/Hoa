@@ -31,4 +31,6 @@ const Tags = sequelize.define('tags', {
     }
 });
 
+Tags.sync();
+
 exports.Tags = Tags;

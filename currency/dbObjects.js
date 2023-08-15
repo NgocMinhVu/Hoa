@@ -3,16 +3,16 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize('database', 'username', 'password', {
     host: 'localhost',
     dialect: 'sqlite',
-    logging: console.log,
+    logging: false,
     storage: 'database.sqlite'
 });
 
-const Users = require('./models/Users.js')(sequelize, Sequelize.DataTypes);
-const CurrencyShop = require('./models/CurrencyShop.js')(
+const Users = require('../models/Users.js')(sequelize, Sequelize.DataTypes);
+const CurrencyShop = require('../models/CurrencyShop.js')(
     sequelize,
     Sequelize.DataTypes
 );
-const UserItems = require('./models/UserItems.js')(
+const UserItems = require('../models/UserItems.js')(
     sequelize,
     Sequelize.DataTypes
 );

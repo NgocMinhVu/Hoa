@@ -4,7 +4,7 @@ const { Tags } = require('../../tags.js');
 module.exports = {
     category: 'tag',
     data: new SlashCommandBuilder()
-        .setName('addtag')
+        .setName('tagadd')
         .setDescription('Set a new tag')
         .addStringOption((option) =>
             option.setName('name').setDescription('Tag name').setRequired(true)
