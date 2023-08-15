@@ -7,6 +7,11 @@ const {
     GatewayIntentBits,
     Partials
 } = require('discord.js');
+const { Player } = require('discord-player');
+const {
+    SpotifyExtractor,
+    SoundCloudExtractor
+} = require('@discord-player/extractor');
 const { token } = require('./config.json');
 
 const client = new Client({
@@ -29,6 +34,22 @@ global.client = client;
 client.cooldowns = new Collection();
 // register command objects
 client.commands = new Collection();
+
+// registering events
+const eventsPath = path.join(__dirname, 'events');
+const eventFiles = fs
+    .readdirSync(eventsPath)
+    .filter((file) => file.endsWith('.js'));
+
+for (const file of eventFiles) {
+    const filePath = path.join(eventsPath, file);
+    const event = require(filePath);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args));
+    }
+}
 
 // registering commands
 const foldersPath = path.join(__dirname, 'commands');
@@ -53,20 +74,34 @@ for (const folder of commandFolders) {
     }
 }
 
-// registering events
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs
-    .readdirSync(eventsPath)
-    .filter((file) => file.endsWith('.js'));
+// entrypoint for discord-player based application
+const player = new Player(client);
+global.player = player;
+// load all extractors from the @discord-player/extractor package
+player.extractors.loadDefault();
 
-for (const file of eventFiles) {
-    const filePath = path.join(eventsPath, file);
-    const event = require(filePath);
-    if (event.once) {
-        client.once(event.name, (...args) => event.execute(...args));
-    } else {
-        client.on(event.name, (...args) => event.execute(...args));
-    }
-}
+player.on('trackStart', (queue, track) => {
+    queue.metadata.send(
+        `🎶 | Started playing: **${track.title}** in **${queue.connection.channel.name}**!`
+    );
+});
+
+player.on('trackAdd', (queue, track) => {
+    queue.metadata.send(`🎶 | Track **${track.title}** queued!`);
+});
+
+player.on('botDisconnect', (queue) => {
+    queue.metadata.send(
+        '❌ | I was manually disconnected from the voice channel, clearing queue!'
+    );
+});
+
+player.on('channelEmpty', (queue) => {
+    queue.metadata.send('❌ | Nobody is in the voice channel, leaving...');
+});
+
+player.on('queueEnd', (queue) => {
+    queue.metadata.send('✅ | Queue finished!');
+});
 
 client.login(token);
