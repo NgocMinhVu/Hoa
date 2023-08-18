@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const { useMainPlayer } = require('discord-player');
 
 module.exports = {
-    category: 'music',
+    category: 'player',
     data: new SlashCommandBuilder()
         .setName('skip')
         .setDescription('Skip the current song.'),

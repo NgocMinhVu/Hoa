@@ -7,7 +7,7 @@ const {
     GatewayIntentBits,
     Partials
 } = require('discord.js');
-const { Player } = require('discord-player');
+const { Player, GuildQueue, GuildNodeManager } = require('discord-player');
 const {
     SpotifyExtractor,
     SoundCloudExtractor
@@ -79,6 +79,9 @@ const player = Player.singleton(client);
 // load extractors from the @discord-player/extractor package
 player.extractors.register(SoundCloudExtractor, {});
 player.extractors.register(SpotifyExtractor, {});
+
+const guildNodeManager = new GuildNodeManager(player);
+global.guildNodeManager = guildNodeManager;
 
 // registering player events
 const playerEventsPath = path.join(__dirname, 'events/player');

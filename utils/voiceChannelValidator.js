@@ -1,9 +1,6 @@
 async function notInVoiceChannel(interaction) {
     if (!interaction.member.voice.channel) {
-        await interaction.reply({
-            content: 'You are not connected to a voice channel.',
-            ephemeral: true
-        });
+        await interaction.followUp('You are not connected to a voice channel.');
 
         return true;
     }
@@ -12,14 +9,13 @@ async function notInVoiceChannel(interaction) {
 
 async function notInSameVoiceChannel(interaction, queue) {
     if (!queue.dispatcher) {
-        return true;
+        return false;
     }
 
-    if (interaction.member.voice.chanel.id !== queue.dispatcher.channel.id) {
-        await interaction.reply({
-            content: `You need to be in the same voice channel as me to use this command.\n\nVoice channel: \`${queue.dispatcher.channel.name}\``,
-            ephemeral: true
-        });
+    if (interaction.member.voice.channel.id !== queue.dispatcher.channel.id) {
+        await interaction.followUp(
+            `You need to be in the same voice channel as me to use this command.\n\nVoice channel: \`${queue.dispatcher.channel.name}\``
+        );
 
         return true;
     }

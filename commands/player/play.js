@@ -1,12 +1,12 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { useMainPlayer } = require('discord-player');
+const { useMainPlayer, useQueue } = require('discord-player');
 const {
     notInVoiceChannel,
     notInSameVoiceChannel
 } = require('../../utils/voiceChannelValidator.js');
 
 module.exports = {
-    category: 'music',
+    category: 'player',
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('Play music')
@@ -17,19 +17,19 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
-        if (notInVoiceChannel) {
-            return;
-        }
+        await interaction.deferReply();
 
-        if (notInSameVoiceChannel) {
-            return;
+        if (await notInVoiceChannel(interaction)) return;
+
+        const queue = useQueue(interaction.guild.id);
+
+        if (queue) {
+            if (await notInSameVoiceChannel(interaction, queue)) return;
         }
 
         const player = useMainPlayer();
         const channel = interaction.member.voice.channel;
         const query = interaction.options.getString('query');
-
-        await interaction.deferReply();
 
         try {
             const { track } = await player.play(channel, query, {
@@ -39,9 +39,9 @@ module.exports = {
                 }
             });
 
-            return interaction.followUp(`**${track.title}** enqueued!`);
+            return interaction.editReply(`**${track.title}** enqueued!`);
         } catch (e) {
-            return interaction.followUp(`Something went wrong: ${e}`);
+            return interaction.editReply(`Something went wrong: ${e}`);
         }
     }
 };
