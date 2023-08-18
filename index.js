@@ -35,14 +35,14 @@ client.cooldowns = new Collection();
 // register command objects
 client.commands = new Collection();
 
-// registering events
-const eventsPath = path.join(__dirname, 'events');
-const eventFiles = fs
-    .readdirSync(eventsPath)
+// registering client events
+const clientEventsPath = path.join(__dirname, 'events/client');
+const clientEventFiles = fs
+    .readdirSync(clientEventsPath)
     .filter((file) => file.endsWith('.js'));
 
-for (const file of eventFiles) {
-    const filePath = path.join(eventsPath, file);
+for (const file of clientEventFiles) {
+    const filePath = path.join(clientEventsPath, file);
     const event = require(filePath);
     if (event.once) {
         client.once(event.name, (...args) => event.execute(...args));
@@ -80,28 +80,20 @@ const player = Player.singleton(client);
 player.extractors.register(SoundCloudExtractor, {});
 player.extractors.register(SpotifyExtractor, {});
 
-player.on('trackStart', (queue, track) => {
-    queue.metadata.send(
-        `Started playing: **${track.title}** in **${queue.connection.channel.name}**!`
-    );
-});
+// registering player events
+const playerEventsPath = path.join(__dirname, 'events/player');
+const playerEventFiles = fs
+    .readdirSync(playerEventsPath)
+    .filter((file) => file.endsWith('.js'));
 
-player.on('trackAdd', (queue, track) => {
-    queue.metadata.send(`Track **${track.title}** queued!`);
-});
-
-player.on('botDisconnect', (queue) => {
-    queue.metadata.send(
-        'I was manually disconnected from the voice channel, clearing queue!'
-    );
-});
-
-player.on('channelEmpty', (queue) => {
-    queue.metadata.send('Nobody is in the voice channel, leaving...');
-});
-
-player.on('queueEnd', (queue) => {
-    queue.metadata.send('Queue finished!');
-});
+for (const file of playerEventFiles) {
+    const filePath = path.join(playerEventsPath, file);
+    const event = require(filePath);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args));
+    }
+}
 
 client.login(token);

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { Tags } = require('../../tags.js');
+const { Tags } = require('../../tag/tags.js');
 const tag = require('./tag.js');
 
 module.exports = {

@@ -1,5 +1,9 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { useMainPlayer } = require('discord-player');
+const {
+    notInVoiceChannel,
+    notInSameVoiceChannel
+} = require('../../utils/voiceChannelValidator.js');
 
 module.exports = {
     category: 'music',
@@ -13,19 +17,18 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
-        const channel = interaction.member.voice.channel;
-        if (!channel) {
-            return interaction.reply({
-                content: 'You are not connected to a voice channel.',
-                ephemeral: true
-            });
+        if (notInVoiceChannel) {
+            return;
         }
 
-        // TODO: if the bot is already in a channel, check if it is the same channel as the member
+        if (notInSameVoiceChannel) {
+            return;
+        }
 
         const player = useMainPlayer();
-
+        const channel = interaction.member.voice.channel;
         const query = interaction.options.getString('query');
+
         await interaction.deferReply();
 
         try {
@@ -35,8 +38,6 @@ module.exports = {
                     metadata: interaction // access this metadata object using queue.metadata later on
                 }
             });
-
-            console.log(track);
 
             return interaction.followUp(`**${track.title}** enqueued!`);
         } catch (e) {

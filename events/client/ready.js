@@ -1,6 +1,6 @@
 const { Events } = require('discord.js');
-const { Users } = require('./../currency/dbObjects.js');
-const { currency } = require('./../currency/currency.js');
+const { Users } = require('../../currency/dbObjects.js');
+const { currency } = require('../../currency/currency.js');
 
 module.exports = {
     name: Events.ClientReady,
