@@ -1,7 +1,7 @@
 // REST object interacts with the Discord API through HTTP requests.
 // Routes object provides methods for generating API routes.
 const { REST, Routes } = require('discord.js');
-const { clientId, guildId, token } = require('./config.json');
+const { clientId, guildId, token } = require('../config.json');
 
 // token to be used for authentication
 const rest = new REST().setToken(token);

@@ -75,33 +75,33 @@ for (const folder of commandFolders) {
 }
 
 // entrypoint for discord-player based application
-const player = new Player(client);
-global.player = player;
-// load all extractors from the @discord-player/extractor package
-player.extractors.loadDefault();
+const player = Player.singleton(client);
+// load extractors from the @discord-player/extractor package
+player.extractors.register(SoundCloudExtractor, {});
+player.extractors.register(SpotifyExtractor, {});
 
 player.on('trackStart', (queue, track) => {
     queue.metadata.send(
-        `🎶 | Started playing: **${track.title}** in **${queue.connection.channel.name}**!`
+        `Started playing: **${track.title}** in **${queue.connection.channel.name}**!`
     );
 });
 
 player.on('trackAdd', (queue, track) => {
-    queue.metadata.send(`🎶 | Track **${track.title}** queued!`);
+    queue.metadata.send(`Track **${track.title}** queued!`);
 });
 
 player.on('botDisconnect', (queue) => {
     queue.metadata.send(
-        '❌ | I was manually disconnected from the voice channel, clearing queue!'
+        'I was manually disconnected from the voice channel, clearing queue!'
     );
 });
 
 player.on('channelEmpty', (queue) => {
-    queue.metadata.send('❌ | Nobody is in the voice channel, leaving...');
+    queue.metadata.send('Nobody is in the voice channel, leaving...');
 });
 
 player.on('queueEnd', (queue) => {
-    queue.metadata.send('✅ | Queue finished!');
+    queue.metadata.send('Queue finished!');
 });
 
 client.login(token);

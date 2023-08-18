@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { useMainPlayer } = require('discord-player');
 
 module.exports = {
     category: 'music',
@@ -22,6 +23,8 @@ module.exports = {
 
         // TODO: if the bot is already in a channel, check if it is the same channel as the member
 
+        const player = useMainPlayer();
+
         const query = interaction.options.getString('query');
         await interaction.deferReply();
 
@@ -32,6 +35,8 @@ module.exports = {
                     metadata: interaction // access this metadata object using queue.metadata later on
                 }
             });
+
+            console.log(track);
 
             return interaction.followUp(`**${track.title}** enqueued!`);
         } catch (e) {
