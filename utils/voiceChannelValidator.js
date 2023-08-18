@@ -8,6 +8,7 @@ async function notInVoiceChannel(interaction) {
 }
 
 async function notInSameVoiceChannel(interaction, queue) {
+    // check if application if currently in a channel
     if (!queue.dispatcher) {
         return false;
     }

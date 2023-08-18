@@ -7,6 +7,7 @@ const {
 
 module.exports = {
     category: 'player',
+    cooldown: 1,
     data: new SlashCommandBuilder()
         .setName('play')
         .setDescription('Play music')
@@ -23,9 +24,7 @@ module.exports = {
 
         const queue = useQueue(interaction.guild.id);
 
-        if (queue) {
-            if (await notInSameVoiceChannel(interaction, queue)) return;
-        }
+        if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
 
         const player = useMainPlayer();
         const channel = interaction.member.voice.channel;

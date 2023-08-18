@@ -1,9 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { useQueue } = require('discord-player');
 const {
     notInVoiceChannel,
     notInSameVoiceChannel
 } = require('../../utils/voiceChannelValidator.js');
-const { useQueue } = require('discord-player');
+const { colors } = require('../../utils/config.js');
 
 module.exports = {
     category: 'player',
@@ -15,27 +16,66 @@ module.exports = {
 
         const queue = useQueue(interaction.guild.id);
 
+        if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
+
         if (!queue) {
             return await interaction.editReply(
                 'The queue is currently empty. You can add some tracks with `/play`.'
             );
         }
 
+        const queueLength = queue.tracks.data.length;
+        if (queueLength === 0) {
+            return await interaction.editReply(
+                'The queue is currently empty. You can add some tracks with `/play`.'
+            );
+        }
+
         const queueString = queue.tracks.data
-            .slice(0, 10)
             .map((track, index) => {
                 let durationFormat =
                     track.raw.duration === 0 || track.duration === '0:00'
                         ? ''
-                        : `\`${track.duration}\``;
-                return `${index + 1}. ${track.title} [${durationFormat}]`;
+                        : `\`[${track.duration}]\``;
+                return `${index + 1}.     ${track.title} ${durationFormat}`;
             })
             .join('\n');
 
-        const embed = new EmbedBuilder()
-            .setTitle('Music Queue')
-            .setDescription(`${queueString}`);
+        const currentTrack = queue.currentTrack;
 
-        return interaction.editReply({ embeds: [embed] });
+        if (!currentTrack) {
+            return interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(colors.info)
+                        .setTitle('Music Queue')
+                        .setAuthor({ name: 'Hoa' })
+                        .setDescription(`Add more tracks with \`/play\`.`)
+                        .addFields({
+                            name: 'Upcoming tracks',
+                            value: `${queueString}`
+                        })
+                        .setTimestamp()
+                ]
+            });
+        } else {
+            return interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(colors.info)
+                        .setTitle('Music Queue')
+                        .setAuthor({ name: 'Hoa' })
+                        .addFields({
+                            name: 'Now playing',
+                            value: `${currentTrack.title}`
+                        })
+                        .addFields({
+                            name: 'Upcoming tracks',
+                            value: `${queueString}`
+                        })
+                        .setTimestamp()
+                ]
+            });
+        }
     }
 };

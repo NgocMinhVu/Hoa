@@ -3,19 +3,18 @@ const { AuditLogEvent, Events } = require('discord.js');
 module.exports = {
     name: Events.GuildAuditLogEntryCreate,
     async execute(auditLog) {
-        const {
-            action,
-            extra: {
-                channel: { name }
-            },
-            executorId,
-            targetId
-        } = auditLog;
+        const { action, executorId, targetId } = auditLog;
 
         const executor = await client.users.fetch(executorId);
         const target = await client.users.fetch(targetId);
 
         if (action === AuditLogEvent.MessageDelete) {
+            const {
+                extra: {
+                    channel: { name }
+                }
+            } = auditLog;
+
             console.log(
                 `A message by ${target.username} was deleted by ${executor.username} in ${name}.`
             );

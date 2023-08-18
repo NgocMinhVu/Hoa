@@ -1,5 +1,9 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { useMainPlayer } = require('discord-player');
+const { useMainPlayer, useQueue } = require('discord-player');
+const {
+    notInVoiceChannel,
+    notInSameVoiceChannel
+} = require('../../utils/voiceChannelValidator');
 
 module.exports = {
     category: 'player',
@@ -9,17 +13,26 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply();
 
-        const player = useMainPlayer();
-        const queue = player.getQueue(interaction.guildId);
+        if (await notInVoiceChannel(interaction)) return;
 
-        if (!queue || !queue.playing) {
-            return interaction.followUp('No music is being played');
+        const queue = useQueue(interaction.guild.id);
+
+        if (!queue) {
+            return await interaction.reply(
+                'The queue is currently empty. You can add some tracks with `/play`.'
+            );
         }
 
-        const currentTrack = queue.current;
+        if (await notInSameVoiceChannel(interaction, queue)) return;
+
+        const player = useMainPlayer();
+
+        const skippedTrack = queue.currentTrack;
         try {
-            queue.skip();
-            return interaction.followUp(`Skipped **${currentTrack}**!   `);
+            queue.node.skip();
+            return interaction.followUp(
+                `Skipped **${skippedTrack.title}**!   `
+            );
         } catch {
             return interaction.followUp('Something went wrong!');
         }
