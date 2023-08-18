@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { request } = require('undici');
+const { colors } = require('../../utils/config.js');
 
 const trim = (str, max) =>
     str.length > max ? `${str.slice(0, max - 3)}...` : str;
@@ -30,7 +31,7 @@ module.exports = {
         const [answer] = list;
 
         const embed = new EmbedBuilder()
-            .setColor(0xf8c8dc)
+            .setColor(colors.note)
             .setTitle(answer.word)
             .setURL(answer.permalink)
             .addFields(

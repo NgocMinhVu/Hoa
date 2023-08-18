@@ -1,9 +1,15 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { useMainPlayer, useQueue } = require('discord-player');
 const {
     notInVoiceChannel,
     notInSameVoiceChannel
 } = require('../../utils/voiceChannelValidator');
+const {
+    queueDoesNotExist,
+    queueIsEmpty,
+    queueNoCurrentTrack
+} = require('../../utils/queueValidator');
+const { colors } = require('../../utils/config.js');
 
 module.exports = {
     category: 'player',
@@ -17,24 +23,29 @@ module.exports = {
 
         const queue = useQueue(interaction.guild.id);
 
-        if (!queue) {
-            return await interaction.reply(
-                'The queue is currently empty. You can add some tracks with `/play`.'
-            );
-        }
+        if (await queueDoesNotExist(interaction, queue)) return;
 
-        if (await notInSameVoiceChannel(interaction, queue)) return;
+        if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
 
-        const player = useMainPlayer();
+        if (await queueNoCurrentTrack(interaction, queue)) return;
 
         const skippedTrack = queue.currentTrack;
-        try {
-            queue.node.skip();
-            return interaction.followUp(
-                `Skipped **${skippedTrack.title}**!   `
-            );
-        } catch {
-            return interaction.followUp('Something went wrong!');
-        }
+        queue.node.skip();
+
+        return await interaction.editReply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(colors.success)
+                    .setAuthor({
+                        name:
+                            interaction.member.nickname ||
+                            interaction.user.username,
+                        iconURL: interaction.user.avatarURL()
+                    })
+                    .setDescription(
+                        `**${skippedTrack.title}** has been skipped.`
+                    )
+            ]
+        });
     }
 };

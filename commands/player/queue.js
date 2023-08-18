@@ -4,6 +4,7 @@ const {
     notInVoiceChannel,
     notInSameVoiceChannel
 } = require('../../utils/voiceChannelValidator.js');
+const { queueDoesNotExist } = require('../../utils/queueValidator.js');
 const { colors } = require('../../utils/config.js');
 
 module.exports = {
@@ -14,32 +15,29 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply();
 
+        if (await notInVoiceChannel(interaction)) return;
+
         const queue = useQueue(interaction.guild.id);
+
+        if (await queueDoesNotExist(interaction, queue)) return;
 
         if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
 
-        if (!queue) {
-            return await interaction.editReply(
-                'The queue is currently empty. You can add some tracks with `/play`.'
-            );
-        }
-
         const queueLength = queue.tracks.data.length;
+        let queueString;
         if (queueLength === 0) {
-            return await interaction.editReply(
-                'The queue is currently empty. You can add some tracks with `/play`.'
-            );
+            queueString = '*No upcoming tracks*';
+        } else {
+            queueString = queue.tracks.data
+                .map((track, index) => {
+                    let durationFormat =
+                        track.raw.duration === 0 || track.duration === '0:00'
+                            ? ''
+                            : `\`[${track.duration}]\``;
+                    return `${index + 1}.     ${track.title} ${durationFormat}`;
+                })
+                .join('\n');
         }
-
-        const queueString = queue.tracks.data
-            .map((track, index) => {
-                let durationFormat =
-                    track.raw.duration === 0 || track.duration === '0:00'
-                        ? ''
-                        : `\`[${track.duration}]\``;
-                return `${index + 1}.     ${track.title} ${durationFormat}`;
-            })
-            .join('\n');
 
         const currentTrack = queue.currentTrack;
 
@@ -50,7 +48,6 @@ module.exports = {
                         .setColor(colors.info)
                         .setTitle('Music Queue')
                         .setAuthor({ name: 'Hoa' })
-                        .setDescription(`Add more tracks with \`/play\`.`)
                         .addFields({
                             name: 'Upcoming tracks',
                             value: `${queueString}`
@@ -65,14 +62,16 @@ module.exports = {
                         .setColor(colors.info)
                         .setTitle('Music Queue')
                         .setAuthor({ name: 'Hoa' })
-                        .addFields({
-                            name: 'Now playing',
-                            value: `${currentTrack.title}`
-                        })
-                        .addFields({
-                            name: 'Upcoming tracks',
-                            value: `${queueString}`
-                        })
+                        .addFields(
+                            {
+                                name: 'Now playing',
+                                value: `${currentTrack.title}`
+                            },
+                            {
+                                name: 'Upcoming tracks',
+                                value: `${queueString}`
+                            }
+                        )
                         .setTimestamp()
                 ]
             });

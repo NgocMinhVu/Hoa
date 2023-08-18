@@ -1,9 +1,10 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { useMainPlayer, useQueue } = require('discord-player');
 const {
     notInVoiceChannel,
     notInSameVoiceChannel
 } = require('../../utils/voiceChannelValidator.js');
+const { colors } = require('../../utils/config.js');
 
 module.exports = {
     category: 'player',
@@ -38,9 +39,27 @@ module.exports = {
                 }
             });
 
-            return interaction.editReply(`**${track.title}** enqueued!`);
+            return interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(colors.success)
+                        .setAuthor({
+                            name:
+                                interaction.member.nickname ||
+                                interaction.user.username,
+                            iconURL: interaction.user.avatarURL()
+                        })
+                        .setDescription(`Upcoming: **${track.title}**`)
+                ]
+            });
         } catch (e) {
-            return interaction.editReply(`Something went wrong: ${e}`);
+            return interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(colors.error)
+                        .setDescription(`Something went wrong: ${e}`)
+                ]
+            });
         }
     }
 };
