@@ -1,4 +1,11 @@
 {
+    "error": [
+        "Well, that wasn't supposed to happen...",
+        "Houston, we have a problem.",
+        "Oh no, a glitch in the matrix!",
+        "Huh... that wasn't part of the script.",
+        "Looks like we've encountered a hiccup."
+    ],
     "noLyrics": [
         "The lyrical elves are still searching for the words to this tune.",
         "Seems like the lyrics for this track are playing hide and seek.",

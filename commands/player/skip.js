@@ -26,7 +26,6 @@ module.exports = {
         if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
         if (await queueNoCurrentTrack(interaction, queue)) return;
 
-        const skippedTrack = queue.currentTrack;
         queue.node.skip();
 
         const response =

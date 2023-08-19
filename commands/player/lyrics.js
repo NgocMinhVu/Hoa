@@ -72,7 +72,7 @@ module.exports = {
             if (i === 0) {
                 embeds.push(
                     new EmbedBuilder()
-                        .setColor(colors.success)
+                        .setColor(colors.note)
                         .setAuthor({
                             name: `${lyricsResult.artist.name}`,
                             iconURL: `${lyricsResult.artist.image}`,
@@ -86,7 +86,7 @@ module.exports = {
             } else {
                 embeds.push(
                     new EmbedBuilder()
-                        .setColor(colors.success)
+                        .setColor(colors.note)
                         .setDescription(`${trimmedLyrics}`)
                 );
             }

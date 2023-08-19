@@ -32,7 +32,7 @@ module.exports = {
                         track.raw.duration === 0 || track.duration === '0:00'
                             ? ''
                             : `\`[${track.duration}]\``;
-                    return `${index + 1}.     ${track.title} ${durationFormat}`;
+                    return `${index + 1}. ${track.title} ${durationFormat}`;
                 })
                 .join('\n');
         }
@@ -81,3 +81,43 @@ module.exports = {
         }
     }
 };
+
+// let nameString = '';
+//                 let durationString = '';
+
+//                 for (const item of track.playlist.tracks) {
+//                     nameString += `${item.title.slice(0, 50)}\n`;
+//                     durationString += `${item.duration}\n`;
+//                 }
+
+//                 return interaction.editReply({
+//                     embeds: [
+//                         new EmbedBuilder()
+//                             .setColor(colors.success)
+//                             .setAuthor({
+//                                 name:
+//                                     interaction.member.nickname ||
+//                                     interaction.user.username,
+//                                 iconURL: interaction.user.avatarURL()
+//                             })
+//                             .setTitle('Added Playlist')
+//                             .setThumbnail(track.playlist.thumbnail)
+//                             .setFields({name: 'Playlist', value: track.playlist.title, url: track.playlist.url}, {name: 'Tracks', value: track.playlist.tracks.length, inline: true}
+//                                 {
+//                                     name: 'Track',
+//                                     value: nameString,
+//                                     inline: true
+//                                 },
+//                                 {
+//                                     name: '\u200B',
+//                                     value: '\u200B',
+//                                     inline: true
+//                                 },
+//                                 {
+//                                     name: 'Length',
+//                                     value: durationString,
+//                                     inline: true
+//                                 }
+//                             )
+//                     ]
+//                 });

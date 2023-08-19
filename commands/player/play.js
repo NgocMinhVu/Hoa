@@ -5,6 +5,7 @@ const {
     notInSameVoiceChannel
 } = require('../../utils/voiceChannelValidator.js');
 const { colors } = require('../../utils/config.js');
+const { error } = require('./response.json');
 
 module.exports = {
     category: 'player',
@@ -30,30 +31,75 @@ module.exports = {
         const channel = interaction.member.voice.channel;
         const query = interaction.options.getString('query');
 
-        //TODO: embed response for playlist
-
         try {
             const { track } = await player.play(channel, query, {
                 nodeOptions: {
-                    // node Options are the options for guild node (queue)
-                    metadata: interaction // access this metadata object using queue.metadata later on
+                    repeatMode: 2,
+                    metadata: interaction
                 }
             });
 
-            return interaction.editReply({
-                embeds: [
-                    new EmbedBuilder().setColor(colors.success).setFields({
-                        name: 'Latest Entry',
-                        value: `${track.title}`
-                    })
-                ]
-            });
+            if (!track.playlist) {
+                return interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(colors.success)
+                            .setTitle('Added Track')
+                            .setThumbnail(track.thumbnail)
+                            .setFields(
+                                {
+                                    name: 'Track',
+                                    value: track.title,
+                                    inline: true
+                                },
+                                {
+                                    name: '\u200B',
+                                    value: '\u200B',
+                                    inline: true
+                                },
+                                {
+                                    name: 'Length',
+                                    value: track.raw.duration,
+                                    inline: true
+                                }
+                            )
+                    ]
+                });
+            } else {
+                return interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(colors.success)
+                            .setTitle('Added Playlist')
+                            .setThumbnail(track.playlist.thumbnail)
+                            .setFields(
+                                {
+                                    name: 'Playlist',
+                                    value: `${track.playlist.title}`,
+                                    url: `${track.playlist.url}`,
+                                    inline: true
+                                },
+                                {
+                                    name: '\u200B',
+                                    value: '\u200B',
+                                    inline: true
+                                },
+                                {
+                                    name: 'Tracks',
+                                    value: `${track.playlist.tracks.length}`,
+                                    inline: true
+                                }
+                            )
+                    ]
+                });
+            }
         } catch (e) {
+            const response = error[Math.floor(Math.random() * error.length)];
             return interaction.editReply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(colors.error)
-                        .setDescription(`Something went wrong: ${e}`)
+                        .setDescription(`${response}`)
                 ]
             });
         }
