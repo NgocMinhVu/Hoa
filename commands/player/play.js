@@ -11,20 +11,19 @@ module.exports = {
     cooldown: 1,
     data: new SlashCommandBuilder()
         .setName('play')
-        .setDescription('Play music')
+        .setDescription('Queue a track or playlist.')
         .addStringOption((option) =>
             option
                 .setName('query')
-                .setDescription('The title or URL of the track')
+                .setDescription('Search query or URL')
                 .setRequired(true)
         ),
     async execute(interaction) {
         await interaction.deferReply();
 
-        if (await notInVoiceChannel(interaction)) return;
-
         const queue = useQueue(interaction.guild.id);
 
+        if (await notInVoiceChannel(interaction)) return;
         if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
 
         const player = useMainPlayer();

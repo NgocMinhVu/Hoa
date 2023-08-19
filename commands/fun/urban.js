@@ -44,7 +44,7 @@ module.exports = {
                     value: trim(answer.example.replace(/\[|\]/g, ''), 1024)
                 },
                 {
-                    name: 'Rating',
+                    name: 'Ratings',
                     value: `${answer.thumbs_up} thumbs up. ${answer.thumbs_down} thumbs down.`
                 }
             );

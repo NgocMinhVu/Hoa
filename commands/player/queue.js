@@ -15,12 +15,10 @@ module.exports = {
     async execute(interaction) {
         await interaction.deferReply();
 
-        if (await notInVoiceChannel(interaction)) return;
-
         const queue = useQueue(interaction.guild.id);
 
+        if (await notInVoiceChannel(interaction)) return;
         if (await queueDoesNotExist(interaction, queue)) return;
-
         if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
 
         const queueLength = queue.tracks.data.length;
@@ -40,14 +38,16 @@ module.exports = {
         }
 
         const currentTrack = queue.currentTrack;
-
         if (!currentTrack) {
             return interaction.editReply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(colors.info)
                         .setTitle('Music Queue')
-                        .setAuthor({ name: 'Hoa' })
+                        .setAuthor({
+                            name: 'Hoa',
+                            iconURL: client.user.avatarURL()
+                        })
                         .addFields({
                             name: 'Upcoming tracks',
                             value: `${queueString}`
@@ -61,7 +61,10 @@ module.exports = {
                     new EmbedBuilder()
                         .setColor(colors.info)
                         .setTitle('Music Queue')
-                        .setAuthor({ name: 'Hoa' })
+                        .setAuthor({
+                            name: 'Hoa',
+                            iconURL: client.user.avatarURL()
+                        })
                         .addFields(
                             {
                                 name: 'Now playing',
