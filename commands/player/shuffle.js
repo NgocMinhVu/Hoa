@@ -1,37 +1,35 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { useMainPlayer, useQueue } = require('discord-player');
+const { useQueue } = require('discord-player');
 const {
     notInVoiceChannel,
     notInSameVoiceChannel
-} = require('../../utils/voiceChannelValidator');
+} = require('../../utils/voiceChannelValidator.js');
 const {
     queueDoesNotExist,
-    queueIsEmpty,
-    queueNoCurrentTrack
-} = require('../../utils/queueValidator');
+    queueIsEmpty
+} = require('../../utils/queueValidator.js');
 const { colors } = require('../../utils/config.js');
-const { skipTrack } = require('./response.json');
+const { shuffleQueue } = require('./response.json');
 
 module.exports = {
     category: 'player',
     data: new SlashCommandBuilder()
-        .setName('skip')
-        .setDescription('Skip the current song.'),
+        .setName('shuffle')
+        .setDescription('Shuffle the queue.'),
     async execute(interaction) {
         await interaction.deferReply();
 
         const queue = useQueue(interaction.guild.id);
 
         if (await notInVoiceChannel(interaction)) return;
-        if (await queueDoesNotExist(interaction, queue)) return;
         if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
-        if (await queueNoCurrentTrack(interaction, queue)) return;
+        if (await queueDoesNotExist(interaction, queue)) return;
+        if (await queueIsEmpty(interaction, queue)) return;
 
-        const skippedTrack = queue.currentTrack;
-        queue.node.skip();
+        queue.tracks.shuffle();
 
-        const response =
-            skipTrack[Math.floor(Math.random() * skipTrack.length)];
+        response =
+            shuffleQueue[Math.floor(Math.random() * shuffleQueue.length)];
 
         return await interaction.editReply({
             embeds: [

@@ -5,5 +5,17 @@
         "Oh dear, the lyrics for this track are on a coffee break.",
         "Lyrics MIA: Missing in Audios.",
         "This song is being a bit shy with its lyrics at the moment."
+    ],
+    "shuffleQueue": [
+        "Shake it up! Your music journey just took an exciting twist",
+        "Shuffle complete! The playlist is now dancing to a new tune.",
+        "Shuffled and ready to groove!",
+        "Musical roulette initiated!"
+    ],
+    "skipTrack": [
+        "Skipping ahead to the next musical gem!",
+        "Moving on! The musical adventure continues.",
+        "Onward to the next tune!",
+        "Changing the rythm!"
     ]
 }

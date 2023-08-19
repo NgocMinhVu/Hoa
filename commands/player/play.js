@@ -42,12 +42,6 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor(colors.success)
-                        .setAuthor({
-                            name:
-                                interaction.member.nickname ||
-                                interaction.user.username,
-                            iconURL: interaction.user.avatarURL()
-                        })
                         .setDescription(`Upcoming: **${track.title}**`)
                 ]
             });
