@@ -30,6 +30,8 @@ module.exports = {
         const channel = interaction.member.voice.channel;
         const query = interaction.options.getString('query');
 
+        //TODO: embed response for playlist
+
         try {
             const { track } = await player.play(channel, query, {
                 nodeOptions: {
@@ -40,9 +42,10 @@ module.exports = {
 
             return interaction.editReply({
                 embeds: [
-                    new EmbedBuilder()
-                        .setColor(colors.success)
-                        .setDescription(`Upcoming: **${track.title}**`)
+                    new EmbedBuilder().setColor(colors.success).setFields({
+                        name: 'Latest Entry',
+                        value: `${track.title}`
+                    })
                 ]
             });
         } catch (e) {

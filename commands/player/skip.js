@@ -1,12 +1,11 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const { useMainPlayer, useQueue } = require('discord-player');
+const { useQueue } = require('discord-player');
 const {
     notInVoiceChannel,
     notInSameVoiceChannel
 } = require('../../utils/voiceChannelValidator');
 const {
     queueDoesNotExist,
-    queueIsEmpty,
     queueNoCurrentTrack
 } = require('../../utils/queueValidator');
 const { colors } = require('../../utils/config.js');
