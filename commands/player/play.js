@@ -35,7 +35,10 @@ module.exports = {
             const { track } = await player.play(channel, query, {
                 nodeOptions: {
                     repeatMode: 2,
-                    metadata: interaction
+                    metadata: {
+                        channel: interaction.channel,
+                        client: interaction.client
+                    }
                 },
                 requestedBy: interaction.user
             });

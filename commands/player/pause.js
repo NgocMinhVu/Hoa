@@ -46,7 +46,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor(colors.success)
-                        .setDescription(`⏸️ ${response}`)
+                        .setDescription(`⏸️ \u200B \u200B ${response}`)
                 ]
             });
         }

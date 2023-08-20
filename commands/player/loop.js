@@ -21,7 +21,7 @@ module.exports = {
                     { name: 'disabled', value: '0' },
                     { name: 'track', value: '1' },
                     { name: 'queue', value: '2' },
-                    { name: 'autoplay', value: '4' }
+                    { name: 'autoplay', value: '3' }
                 )
         ),
     async execute(interaction) {
@@ -82,7 +82,7 @@ module.exports = {
             });
         }
 
-        if (queue.repeatMode === 4) {
+        if (queue.repeatMode === 3) {
             return await interaction.editReply({
                 embeds: [
                     new EmbedBuilder()

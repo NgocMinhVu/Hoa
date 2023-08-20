@@ -58,7 +58,7 @@ module.exports = {
                     })
                     .setThumbnail(currentTrack.thumbnail)
                     .setDescription(
-                        `💿 [${currentTrack.title}](${currentTrack.url})`
+                        `💿 \u200B \u200B [${currentTrack.title}](${currentTrack.url})`
                     )
                     .setFields(
                         { name: 'Author', value: author, inline: true },

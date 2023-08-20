@@ -1,6 +1,7 @@
 module.exports = {
     name: 'playerStart',
     async execute(queue, track) {
-        queue.metadata.send(`Started playing: **{track.title}**`);
+        // TODO: add 1 credit to the person who requests the song
+        await queue.metadata.channel.send(`${track.title}`);
     }
 };

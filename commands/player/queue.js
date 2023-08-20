@@ -47,7 +47,7 @@ module.exports = {
 
             let index = 1;
             for (const track of queue.tracks.data) {
-                queueString += `${index++}. ${track.raw.title}\n`;
+                queueString += `${index++}. \u200B \u200B ${track.raw.title}\n`;
 
                 const [minutes, seconds] = track.raw.duration.split(':');
                 totalSeconds += parseInt(minutes) * 60 + parseInt(seconds);
@@ -90,12 +90,11 @@ module.exports = {
                         currentTrack.thumbnail ||
                             queue.tracks.data[0].raw.thumbnail
                     )
-                    // .setDescription(`*Loop Mode: ${modeString}*`)
                     .setFields(
                         { name: 'Loop Mode', value: `\`${modeString}\`` },
                         {
                             name: 'Now Playing',
-                            value: `💿 ${currentString}`,
+                            value: `💿 \u200B \u200B ${currentString}`,
                             inline: true
                         },
                         { name: '\u200B', value: '\u200B', inline: true },
