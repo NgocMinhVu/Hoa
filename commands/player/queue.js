@@ -1,8 +1,4 @@
-const {
-    SlashCommandBuilder,
-    EmbedBuilder,
-    DefaultRestOptions
-} = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const { useQueue } = require('discord-player');
 const {
     notInVoiceChannel,

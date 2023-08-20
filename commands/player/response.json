@@ -9,30 +9,31 @@
     "noLyrics": [
         "The lyrical elves are still searching for the words to this tune.",
         "Seems like the lyrics for this track are playing hide and seek.",
-        "Oh dear, the lyrics for this track are on a coffee break.",
         "Lyrics MIA: Missing in Audios.",
         "This song is being a bit shy with its lyrics at the moment."
     ],
     "shuffleQueue": [
-        "Shake it up! Your music journey just took an exciting twist",
+        "Shake it up! The rythm just took an exciting twist",
         "Shuffle complete! The playlist is now dancing to a new tune.",
         "Shuffled and ready to groove!",
         "Musical roulette initiated!"
     ],
     "skipTrack": [
         "Skipping ahead to the next musical gem!",
-        "Moving on! The musical adventure continues.",
         "Onward to the next tune!",
         "Changing the rythm!"
     ],
     "removeTrack": [
         "Poof! And the track vanished from the queue.",
-        "And just like that, the track disappeared from the queue.",
-        "Track removed! The queue just got a bit shorter."
+        "And just like that, the track disappeared from the queue."
     ],
     "clearQueue": [
         "Playlist wiped clean. It's a fresh start!",
-        "Clean slate! The stage is set for new beats.",
-        "Out with the old, in with the new. Time for a new musical journey!"
-    ]
+        "Clean slate! The stage is set for new beats."
+    ],
+    "pauseTrack": [
+        "Hold tight, the track's on pause.",
+        "Pausing the beat momentarily."
+    ],
+    "resumeTrack": ["Time to pick up where we left off!", "Resuming playback!"]
 }
