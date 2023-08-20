@@ -8,5 +8,9 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 });
 
 const Users = require('./models/Users.js')(sequelize, Sequelize.DataTypes);
+const Emoticons = require('./models/Emoticons.js')(
+    sequelize,
+    Sequelize.DataTypes
+);
 
-module.exports = { Users };
+module.exports = { Users, Emoticons };

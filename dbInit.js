@@ -10,6 +10,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 });
 
 require('./models/Users.js')(sequelize, Sequelize.DataTypes);
+require('./models/Emoticons.js')(sequelize, Sequelize.DataTypes);
 
 // process.argv array contains the command line arguments.
 // if force is true, the database synchronization should drop and recreate tables.

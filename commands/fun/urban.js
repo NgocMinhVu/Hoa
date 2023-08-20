@@ -9,7 +9,7 @@ module.exports = {
     category: 'fun',
     data: new SlashCommandBuilder()
         .setName('urban')
-        .setDescription('Search ubran dictionary')
+        .setDescription('Search ubran dictionary.')
         .addStringOption((option) =>
             option.setName('term').setDescription('The term').setRequired(true)
         ),
