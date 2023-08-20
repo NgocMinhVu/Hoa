@@ -53,7 +53,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor(colors.warning)
-                        .setDescription(`${response}`)
+                        .setDescription(response)
                         .setFields({
                             name: 'query',
                             value: `${searchQuery}`

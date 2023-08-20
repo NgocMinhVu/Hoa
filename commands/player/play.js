@@ -99,7 +99,7 @@ module.exports = {
                 embeds: [
                     new EmbedBuilder()
                         .setColor(colors.error)
-                        .setDescription(`${response}`)
+                        .setDescription(response)
                 ]
             });
         }

@@ -24,5 +24,10 @@
         "Moving on! The musical adventure continues.",
         "Onward to the next tune!",
         "Changing the rythm!"
+    ],
+    "removeTrack": [
+        "Poof! And the track vanished from the queue.",
+        "And just like that, the track disappeared from the queue.",
+        "Track removed! The queue just got a bit shorter."
     ]
 }
