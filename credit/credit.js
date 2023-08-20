@@ -1,10 +1,10 @@
 const { Collection } = require('discord.js');
-const { Users } = require('./dbObjects.js');
+const { Users } = require('../dbObjects.js');
 
-const currency = new Collection();
+const credit = new Collection();
 
 async function addBalance(id, amount) {
-    const user = currency.get(id);
+    const user = credit.get(id);
 
     if (user) {
         user.balance += Number(amount);
@@ -12,18 +12,18 @@ async function addBalance(id, amount) {
     }
 
     const newUser = await Users.create({ user_id: id, balance: amount });
-    currency.set(id, newUser);
+    credit.set(id, newUser);
 
     return newUser;
 }
 
 function getBalance(id) {
-    const user = currency.get(id);
+    const user = credit.get(id);
     return user ? user.balance : 0;
 }
 
 module.exports = {
-    currency,
+    credit,
     addBalance,
     getBalance
 };

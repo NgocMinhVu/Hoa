@@ -1,11 +1,12 @@
-const { SlashCommandBuilder } = require('discord.js');
-const { getBalance, addBalance } = require('../../currency/currency.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { getBalance, addBalance } = require('../../credit/credit.js');
+const { colors } = require('../../utils/config.js');
 
 module.exports = {
-    category: 'currency',
+    category: 'credit',
     data: new SlashCommandBuilder()
         .setName('transfer')
-        .setDescription('Transfer money to a user.')
+        .setDescription('Transfer credits to a user.')
         .addUserOption((option) =>
             option.setName('user').setDescription('The user').setRequired(true)
         )
@@ -13,30 +14,43 @@ module.exports = {
             option
                 .setName('amount')
                 .setDescription('The amount')
+                .setMinValue(1)
                 .setRequired(true)
         ),
     async execute(interaction) {
+        await interaction.deferReply();
+
         const currentAmount = getBalance(interaction.user.id);
         const transferTarget = interaction.options.getUser('user');
         const transferAmount = interaction.options.getInteger('amount');
 
         if (transferAmount > currentAmount) {
-            return interaction.reply(
-                `Sorry, you only have **${currentAmount}**.`
-            );
-        }
-
-        if (transferAmount <= 0) {
-            return interaction.reply(
-                `Please enter an amount greater than zero.`
-            );
+            return await interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(colors.warning)
+                        .setDescription(
+                            `Oops! Looks like you don't have enough credits for that.`
+                        )
+                ]
+            });
         }
 
         addBalance(interaction.user.id, -transferAmount);
         addBalance(transferTarget.id, transferAmount);
 
-        return interaction.reply(
-            `Successfully transferred **${transferAmount}💰** to **${transferTarget.username}**.`
-        );
+        return await interaction.editReply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(colors.success)
+                    .setAuthor({
+                        name: interaction.user.username,
+                        iconURL: interaction.user.avatarURL()
+                    })
+                    .setDescription(
+                        `Ting-a-ling! Successfully transferred **${transferAmount}** credits to **${transferTarget.username}**.`
+                    )
+            ]
+        });
     }
 };

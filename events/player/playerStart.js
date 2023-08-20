@@ -1,4 +1,4 @@
-const { addBalance } = require('../../credit/currency');
+const { addBalance } = require('../../credit/credit.js');
 
 module.exports = {
     name: 'playerStart',

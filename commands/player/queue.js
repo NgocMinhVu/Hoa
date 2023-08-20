@@ -27,7 +27,7 @@ module.exports = {
 
         const currentTrack = queue.currentTrack;
         if (!currentTrack) {
-            currentString = '*No playing track\n';
+            currentString = '*N/A*';
             currentDurationString = '*N/A*';
         } else {
             currentString = `[${currentTrack.title}](${currentTrack.url})`;
@@ -40,8 +40,8 @@ module.exports = {
 
         const queueLength = queue.tracks.data.length;
         if (queueLength === 0) {
-            queueString = '*No upcoming tracks*';
-            playlistDurationString = '00:00';
+            queueString = '*N/A*';
+            playlistDurationString = '*N/A*';
         } else {
             let totalSeconds = 0;
 
