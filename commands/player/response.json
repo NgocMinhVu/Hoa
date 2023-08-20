@@ -29,5 +29,10 @@
         "Poof! And the track vanished from the queue.",
         "And just like that, the track disappeared from the queue.",
         "Track removed! The queue just got a bit shorter."
+    ],
+    "clearQueue": [
+        "Playlist wiped clean. It's a fresh start!",
+        "Clean slate! The stage is set for new beats.",
+        "Out with the old, in with the new. Time for a new musical journey!"
     ]
 }
