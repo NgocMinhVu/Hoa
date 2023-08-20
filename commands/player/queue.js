@@ -1,4 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const {
+    SlashCommandBuilder,
+    EmbedBuilder,
+    DefaultRestOptions
+} = require('discord.js');
 const { useQueue } = require('discord-player');
 const {
     notInVoiceChannel,
@@ -21,23 +25,78 @@ module.exports = {
         if (await queueDoesNotExist(interaction, queue)) return;
         if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
 
-        const queueLength = queue.tracks.data.length;
-        let queueString;
-        if (queueLength === 0) {
+        // upcoming tracks
+        let queueString = '';
+        let durationString = '';
+
+        if (queue.tracks.data.length === 0) {
             queueString = '*No upcoming tracks*';
+            durationString = '00:00';
         } else {
-            queueString = queue.tracks.data
-                .map((track, index) => {
-                    let durationFormat =
-                        track.raw.duration === 0 || track.duration === '0:00'
-                            ? ''
-                            : `\`[${track.duration}]\``;
-                    return `${index + 1}. ${track.title} ${durationFormat}`;
-                })
-                .join('\n');
+            let totalSeconds = 0;
+            let index = 1;
+
+            for (const track of queue.tracks.data) {
+                queueString += `${index++}. ${track.raw.title}\n`;
+
+                const [minutes, seconds] = track.raw.duration.split(':');
+                totalSeconds += parseInt(minutes) * 60 + parseInt(seconds);
+            }
+
+            const totalMinutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+
+            durationString = `${String(hours).padStart(2, '0')}:${String(
+                minutes
+            ).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
         }
 
+        // loop mode
+        const modeStrings = new Map([
+            [0, 'disabled'],
+            [1, 'track'],
+            [2, 'queue'],
+            [3, 'autoplay']
+        ]);
+        const modeString = modeStrings.get(queue.repeatMode);
+
         const currentTrack = queue.currentTrack;
+
+        return interaction.editReply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(colors.info)
+                    .setTitle('Music Queue')
+                    .setAuthor({
+                        name: 'Hoa',
+                        iconURL: client.user.avatarURL()
+                    })
+                    .setThumbnail(
+                        currentTrack.thumbnail ||
+                            queue.tracks.data[0].raw.thumbnail
+                    )
+                    .setFields(
+                        {
+                            name: 'Now Playing',
+                            value: currentTrack.title || '*No playing track*'
+                        },
+                        { name: '\u200B', value: '\u200B' },
+                        { name: 'Upcoming Tracks', value: queueString },
+                        { name: '\u200B', value: '\u200B' },
+                        {
+                            name: 'Duration',
+                            value: durationString,
+                            inline: true
+                        },
+                        { name: '\u200B', value: '\u200B', inline: true },
+                        { name: 'Loop mode', value: modeString, inline: true }
+                    )
+            ]
+        });
+
         if (!currentTrack) {
             return interaction.editReply({
                 embeds: [
@@ -52,7 +111,6 @@ module.exports = {
                             name: 'Upcoming tracks',
                             value: `${queueString}`
                         })
-                        .setTimestamp()
                 ]
             });
         } else {
