@@ -76,12 +76,13 @@ for (const folder of commandFolders) {
 
 // entrypoint for discord-player based application
 const player = Player.singleton(client);
-// load extractors from the @discord-player/extractor package
-player.extractors.register(SoundCloudExtractor, {});
-player.extractors.register(SpotifyExtractor, {});
 
-const guildNodeManager = new GuildNodeManager(player);
-global.guildNodeManager = guildNodeManager;
+// load all the extractors from the @discord-player/extractor package
+await player.extractors.loadDefault();
+
+// load extractors from the @discord-player/extractor package
+// player.extractors.register(SoundCloudExtractor, {});
+// player.extractors.register(SpotifyExtractor, {});
 
 // registering player events
 const playerEventsPath = path.join(__dirname, 'events/player');

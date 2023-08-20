@@ -85,7 +85,7 @@ module.exports = {
                                     inline: true
                                 },
                                 {
-                                    name: 'Number of tracks',
+                                    name: 'Number of Tracks',
                                     value: `${track.playlist.tracks.length}`,
                                     inline: true
                                 }
