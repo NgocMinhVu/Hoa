@@ -34,7 +34,7 @@ module.exports = {
             currentString = '*No playing track\n';
             currentDurationString = '*N/A*';
         } else {
-            currentString = `${currentTrack.title}`;
+            currentString = `[${currentTrack.title}](${currentTrack.url})`;
             currentDurationString = `${currentTrack.duration}`;
         }
 
@@ -73,29 +73,30 @@ module.exports = {
         }
 
         // loop mode
-        const modeStrings = new Map([
-            [0, 'Disabled'],
-            [1, 'Track'],
-            [2, 'Queue'],
-            [3, 'Autoplay']
+        const loopModes = new Map([
+            [0, 'disabled'],
+            [1, 'track'],
+            [2, 'queue'],
+            [3, 'autoplay']
         ]);
-        const modeString = modeStrings.get(queue.repeatMode);
+        const modeString = loopModes.get(queue.repeatMode);
 
         return interaction.editReply({
             embeds: [
                 new EmbedBuilder()
                     .setColor(colors.info)
-                    .setTitle('Music Queue')
                     .setAuthor({
                         name: 'Hoa',
                         iconURL: client.user.avatarURL()
                     })
+                    .setTitle('Music Queue')
                     .setThumbnail(
                         currentTrack.thumbnail ||
                             queue.tracks.data[0].raw.thumbnail
                     )
+                    // .setDescription(`*Loop Mode: ${modeString}*`)
                     .setFields(
-                        { name: 'Loop Mode', value: modeString },
+                        { name: 'Loop Mode', value: `\`${modeString}\`` },
                         {
                             name: 'Now Playing',
                             value: `💿 ${currentString}`,
@@ -103,17 +104,20 @@ module.exports = {
                         },
                         { name: '\u200B', value: '\u200B', inline: true },
                         {
-                            name: 'Length',
+                            name: 'Track Length',
                             value: currentDurationString,
                             inline: true
                         },
                         {
                             name: 'Upcoming Playlist',
-                            value: queueString
+                            value: queueString,
+                            inline: true
                         },
+                        { name: '\u200B', value: '\u200B', inline: true },
                         {
                             name: 'Playlist Length',
-                            value: playlistDurationString
+                            value: playlistDurationString,
+                            inline: true
                         }
                     )
             ]

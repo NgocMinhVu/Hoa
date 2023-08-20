@@ -33,7 +33,7 @@ module.exports = {
         if (queue && (await notInSameVoiceChannel(interaction, queue))) return;
         if (await queueDoesNotExist(interaction, queue)) return;
 
-        const modeStrings = new Map([
+        const loopModes = new Map([
             [0, 'disabled'],
             [1, 'track'],
             [2, 'queue'],
@@ -41,7 +41,7 @@ module.exports = {
         ]);
 
         const mode = parseInt(interaction.options.getString('mode'));
-        const modeString = modeStrings.get(mode);
+        const modeString = loopModes.get(mode);
 
         const currentMode = queue.repeatMode;
         if (mode === currentMode) {

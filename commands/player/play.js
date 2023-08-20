@@ -36,7 +36,8 @@ module.exports = {
                 nodeOptions: {
                     repeatMode: 2,
                     metadata: interaction
-                }
+                },
+                requestedBy: interaction.user
             });
 
             if (!track.playlist) {
@@ -49,7 +50,7 @@ module.exports = {
                             .setFields(
                                 {
                                     name: 'Track',
-                                    value: track.title,
+                                    value: `[${track.title}](${track.url})`,
                                     inline: true
                                 },
                                 {
@@ -58,7 +59,7 @@ module.exports = {
                                     inline: true
                                 },
                                 {
-                                    name: 'Length',
+                                    name: 'Track Length',
                                     value: track.raw.duration,
                                     inline: true
                                 }
@@ -75,8 +76,7 @@ module.exports = {
                             .setFields(
                                 {
                                     name: 'Playlist',
-                                    value: `${track.playlist.title}`,
-                                    url: `${track.playlist.url}`,
+                                    value: `[${track.playlist.title}](${track.playlist.url})`,
                                     inline: true
                                 },
                                 {
@@ -85,7 +85,7 @@ module.exports = {
                                     inline: true
                                 },
                                 {
-                                    name: 'Number of Tracks',
+                                    name: 'Track Count',
                                     value: `${track.playlist.tracks.length}`,
                                     inline: true
                                 }

@@ -78,7 +78,7 @@ for (const folder of commandFolders) {
 const player = Player.singleton(client);
 
 // load all the extractors from the @discord-player/extractor package
-await player.extractors.loadDefault();
+player.extractors.loadDefault();
 
 // load extractors from the @discord-player/extractor package
 // player.extractors.register(SoundCloudExtractor, {});
