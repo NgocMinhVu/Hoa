@@ -33,14 +33,13 @@ module.exports = {
 
         try {
             const { track } = await player.play(channel, query, {
+                requestedBy: interaction.user,
                 nodeOptions: {
-                    repeatMode: 2,
                     metadata: {
                         channel: interaction.channel,
                         client: interaction.client
                     }
-                },
-                requestedBy: interaction.user
+                }
             });
 
             if (!track.playlist) {
@@ -62,9 +61,13 @@ module.exports = {
                                     inline: true
                                 },
                                 {
-                                    name: 'Track Length',
-                                    value: track.raw.duration,
+                                    name: 'Artist',
+                                    value: track.author,
                                     inline: true
+                                },
+                                {
+                                    name: 'Length',
+                                    value: track.raw.duration
                                 }
                             )
                     ]
