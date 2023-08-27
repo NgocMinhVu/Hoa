@@ -7,7 +7,7 @@ const {
 } = require('../../utils/queueValidator.js');
 const { colors } = require('../../utils/config.js');
 const { noLyrics } = require('./response.json');
-const { geniusClientId } = require('../../config.json');
+const { geniusAccessToken } = require('../../config.json');
 
 module.exports = {
     category: 'player',
@@ -31,11 +31,9 @@ module.exports = {
             searchQuery = queue.currentTrack.title;
         }
 
-        const genius = lyricsExtractor(geniusClientId);
+        const genius = lyricsExtractor(geniusAccessToken);
 
         let lyricsResult = await genius.search(searchQuery).catch(() => null);
-
-        console.log(lyricsResult);
 
         // try again with shorter query
         if (!lyricsResult && searchQuery.length > 20) {

@@ -6,9 +6,9 @@ module.exports = {
     async execute(queue) {
         queue.metadata.send({
             embeds: [
-                new EmbedBuilder.setColors(colors.note).setDescription(
-                    "And that's a wrap! Queue finished."
-                )
+                new EmbedBuilder()
+                    .setColors(colors.note)
+                    .setDescription("And that's a wrap! Queue finished.")
             ]
         });
     }

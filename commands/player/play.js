@@ -52,7 +52,7 @@ module.exports = {
                             .setFields(
                                 {
                                     name: 'Track',
-                                    value: `[${track.title}](${track.url})`,
+                                    value: `[${track.title}](${track.url})\n${track.author}`,
                                     inline: true
                                 },
                                 {
@@ -61,13 +61,9 @@ module.exports = {
                                     inline: true
                                 },
                                 {
-                                    name: 'Artist',
-                                    value: track.author,
-                                    inline: true
-                                },
-                                {
                                     name: 'Length',
-                                    value: track.raw.duration
+                                    value: track.raw.duration,
+                                    inline: true
                                 }
                             )
                     ]
