@@ -11,6 +11,8 @@ const {
 const { colors } = require('../../utils/config.js');
 const { pauseTrack } = require('./response.json');
 
+// TODO: pause is only pausing temporarily.
+
 module.exports = {
     category: 'player',
     data: new SlashCommandBuilder()
